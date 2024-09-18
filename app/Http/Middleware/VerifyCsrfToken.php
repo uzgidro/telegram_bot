@@ -16,13 +16,9 @@ class VerifyCsrfToken extends Middleware
         //
     ];
 
-    protected function inExceptArray($request): boolss
+    protected function inExceptArray($request): bool
     {
-        if ($request->ip() === '91.108.6.1' || $request->ip() === '91.108.6.110') {
-            return true;
-        }
-
-        return parent::inExceptArray($request);
+        return true;
     }
 
 

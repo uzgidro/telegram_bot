@@ -41,18 +41,62 @@ Route::post('/murojaat', function (Request $request) {
 
 Route::post('/anticor', function (Request $request) {
 
-    $update = new Update(json_decode($request->json()));
+//    $update = new Update($request->input());
+
+    $data = $request->all();
+    if(isset($data['callback_query'])) {
+        $callbackQuery = $data['callback_query'];
+        $callbackData = $callbackQuery['data']; // Получаем callback_data (например, 'start' или 'end')
+        $chatId = $callbackQuery['message']['chat']['id']; // Получаем chat_id
+        $messageId = $callbackQuery['message']['message_id']; // Получаем chat_id
+        $callbackId = $callbackQuery['id']; // Получаем id callback-запроса
+
+        // Обрабатываем данные callback-запроса
+        if ($callbackData === 'start') {
+            $responseText = "Вы нажали на кнопку Start!";
+        } elseif ($callbackData === 'end') {
+            $responseText = "Вы нажали на кнопку End!";
+        } else {
+            $responseText = "Неизвестная команда!";
+        }
+        // Отправляем ответ на callback_query (чтобы бот не висел)
+        Http::post("https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/answerCallbackQuery", [
+            'callback_query_id' => $callbackId,
+        ]);
+
+        Http::post('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/deleteMessage', [
+            'chat_id' => $chatId,
+            'message_id' => $messageId,
+        ]);
+
+        // Отправляем сообщение в чат с результатом нажатия кнопки
+        Http::post("https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage", [
+            'chat_id' => $chatId,
+            'text' => $responseText,
+        ]);
 
 
-    if ($request->input('message.text') == '/start') {
-        Http::get('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage',
-            ['chat_id' => $update->message->chat->id,
-                'text' => 'Добро пожаловать в антикоррупционный бот АО"Узбекгидроэнерго", вы столкнулись со случаями коррупции - оставьте ваш отзыв и он будет рассмотрен в установленном порадке']
-        );
         return;
     }
 
-    Http::get('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage',
+
+    if ($request->input('message.text') == '/start') {
+        Http::post('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage', [
+            'chat_id' => $request->input('message.chat.id'),
+            'text' => $request->getContent(),
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        ['text' => '1', 'callback_data' => 'start'],
+                        ['text' => '2', 'callback_data' => 'end']
+                    ]
+                ]
+            ]),
+        ]);
+        return;
+    }
+
+    Http::post('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage',
         ['chat_id' => $request->input('message.chat.id'),
             'text' => 'Благодарим Вас за Ваш отзыв, в ближайшее время с вами свяжутся']
     );

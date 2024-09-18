@@ -16,11 +16,11 @@ class CallbackQuery
      * @param Message $message
      * @param string $data
      */
-    public function __construct(mixed $request)
+    public function __construct(array $request)
     {
-        $this->id = $request->{'id'};
-        $this->message = new Message($request->{'message'});
-        $this->data = $request->{'data'};
+        $this->id = $request['id'];
+        $this->message = new Message($request['message']);
+        $this->data = $request['data'];
     }
 
 

@@ -16,11 +16,11 @@ class Message
      * @param Chat $chat
      * @param string $text
      */
-    public function __construct(mixed $request)
+    public function __construct(array $request)
     {
-        $this->messageId = $request->{'messageId'};
-        $this->chat = new Chat($request->{'chat'});
-        $this->text = $request->{'text'};
+        $this->messageId = $request['message_id'];
+        $this->chat = new Chat($request['chat']);
+        $this->text = $request['text'];
     }
 
 

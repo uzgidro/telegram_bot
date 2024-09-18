@@ -13,11 +13,11 @@ class Update
      * @param Message $message
      * @param CallbackQuery $callbackQuery
      */
-    public function __construct(mixed $request)
+    public function __construct(array $request)
     {
-        $this->updateId = $request->{'updateId'};
-        $this->message = new Message($request->{'message'});
-        $this->callbackQuery = new CallbackQuery($request->{'callback_query'});
+        $this->updateId = $request['update_id'];
+        $this->message = new Message($request['message']);
+        $this->callbackQuery = new CallbackQuery($request['callback_query']);
     }
 
 
