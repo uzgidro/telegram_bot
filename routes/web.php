@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\InlineKeyboardButton;
+use App\Models\MessageDto;
+use App\Models\Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
@@ -38,9 +41,12 @@ Route::post('/murojaat', function (Request $request) {
 
 Route::post('/anticor', function (Request $request) {
 
+    $update = new Update(json_decode($request->json()));
+
+
     if ($request->input('message.text') == '/start') {
         Http::get('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage',
-            ['chat_id' => $request->input('message.chat.id'),
+            ['chat_id' => $update->message->chat->id,
                 'text' => 'Добро пожаловать в антикоррупционный бот АО"Узбекгидроэнерго", вы столкнулись со случаями коррупции - оставьте ваш отзыв и он будет рассмотрен в установленном порадке']
         );
         return;
