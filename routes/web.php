@@ -4,6 +4,7 @@ use App\Models\InlineKeyboardButton;
 use App\Models\MessageDto;
 use App\Models\Update;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Route;
 
@@ -41,9 +42,34 @@ Route::post('/murojaat', function (Request $request) {
 
 Route::post('/anticor', function (Request $request) {
 
-//    $update = new Update($request->input());
-
     $data = $request->all();
+
+    if ($request->input('message.text') == '/start') {
+        if(DB::table('users')->first('chat_id') === null) {
+            Db::table('users')->insert([
+                'chat_id' => $data['message']['chat']['id'],
+                'username' => $data['message']['from']['username'],
+                'first_name' => $data['message']['from']['first_name'],
+                'last_name' => $data['message']['from']['last_name'],
+            ]);
+        }
+
+        Http::post('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage', [
+            'chat_id' => $request->input('message.chat.id'),
+            'text' => DB::table('users')->get(),
+            'reply_markup' => json_encode([
+                'inline_keyboard' => [
+                    [
+                        ['text' => '1', 'callback_data' => 'start'],
+                        ['text' => '2', 'callback_data' => 'end']
+                    ]
+                ]
+            ]),
+        ]);
+        return;
+    }
+
+
     if(isset($data['callback_query'])) {
         $callbackQuery = $data['callback_query'];
         $callbackData = $callbackQuery['data']; // Получаем callback_data (например, 'start' или 'end')
@@ -76,23 +102,6 @@ Route::post('/anticor', function (Request $request) {
         ]);
 
 
-        return;
-    }
-
-
-    if ($request->input('message.text') == '/start') {
-        Http::post('https://api.telegram.org/bot6676964221:AAFko2aqnMbC-YeviA4ZRutfEQY1pr5P8Z8/sendMessage', [
-            'chat_id' => $request->input('message.chat.id'),
-            'text' => $request->getContent(),
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [
-                        ['text' => '1', 'callback_data' => 'start'],
-                        ['text' => '2', 'callback_data' => 'end']
-                    ]
-                ]
-            ]),
-        ]);
         return;
     }
 
