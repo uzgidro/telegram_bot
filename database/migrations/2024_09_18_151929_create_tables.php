@@ -11,28 +11,19 @@ return new class extends Migration
      *
      * @return void
      */
-    public function up()
+    public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('chat_id')->primary();
-            $table->string('username');
-            $table->string('first_name');
+            $table->string('chat_id')->primary()->unique();
+            $table->string('first_name')->nullable();
+            $table->string('username')->nullable();
             $table->string('last_name')->nullable();
             $table->string('language')->nullable();
             $table->string('destination')->nullable();
             $table->boolean('is_admin')->nullable();
             $table->boolean('is_anticor')->nullable();
             $table->boolean('is_murojaat')->nullable();
-        });
-
-        Schema::create('messages', function (Blueprint $table) {
-            $table->id();
-            $table->string('text');
-            $table->string('username');
-            $table->string('first_name');
-            $table->string('last_name');
-            $table->string('type');
-            $table->integer('created_at');
+            $table->timestamps();
         });
     }
 
@@ -41,8 +32,8 @@ return new class extends Migration
      *
      * @return void
      */
-    public function down()
+    public function down(): void
     {
-        Schema::dropIfExists('tables');
+        Schema::dropIfExists('users');
     }
 };

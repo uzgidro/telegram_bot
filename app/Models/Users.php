@@ -9,18 +9,21 @@ class Users extends Model
 {
     use HasFactory;
 
-    public int $id;
     public string $chat_id;
     public string $username;
     public string $first_name;
     public string $last_name;
-    public string $language = 'undefined';
-    public string $destination = '/start';
-    public bool $is_admin = false;
-    public bool $is_anticor = false;
-    public bool $is_murojaat = false;
+    public string $language;
+    public string $destination;
+    public bool $is_admin;
+    public bool $is_anticor ;
+    public bool $is_murojaat;
 
     protected $table = 'users';
+    protected $primaryKey = 'chat_id';
+    protected $keyType = 'string';
+    public $incrementing = false;
+
 
     protected $fillable = [
         'chat_id',
