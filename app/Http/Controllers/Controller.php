@@ -10,7 +10,7 @@ class Controller extends BaseController
 {
 //    use AuthorizesRequests, DispatchesJobs, ValidatesRequests;
 
-    public function parseUpdate(array $update)
+    public function parseUpdate(array $update): void
     {
 //        dd($update);
         $model = new UpdateTG($update);

@@ -8,6 +8,7 @@ class MessageTG
     public ?UserTG $from;
     public ?ChatTG $chat;
     public ?string $text;
+    public ?MessageEntitiesTG $entities;
 
     /**
      * @param int $messageId
@@ -24,6 +25,7 @@ class MessageTG
         $this->from = new UserTG($request['from'] ?? null);
         $this->chat = new ChatTG($request['chat'] ?? null);
         $this->text = $request['text'] ?? null;
+        $this->entities = new MessageEntitiesTG($request['entities'] ?? null);
     }
 
 

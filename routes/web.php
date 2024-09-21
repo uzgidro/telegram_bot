@@ -1,9 +1,6 @@
 <?php
 
 use App\Http\Controllers\Controller;
-use App\Models\InlineKeyboardButton;
-use App\Models\MessageDto;
-use App\Models\UpdateTG;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -20,11 +17,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
+Route::get('/', function (Controller $controller) {
 //    dd('Hello World!');
 
     $response = Http::get('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/getUpdates');
-    $controller = new Controller();
     $lastUpdate = $response->json()['result'][count($response->json()['result'])-1];
     $controller->parseUpdate($lastUpdate);
 //    dd($response->json()['result'][count($response->json()['result'])-1]);
