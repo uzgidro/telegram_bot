@@ -11,9 +11,7 @@ class MessageTG
     public ?MessageEntitiesTG $entities;
 
     /**
-     * @param int $messageId
-     * @param ChatTG $chat
-     * @param string $text
+     * @param mixed $request
      */
     public function __construct(mixed $request)
     {
@@ -25,7 +23,7 @@ class MessageTG
         $this->from = new UserTG($request['from'] ?? null);
         $this->chat = new ChatTG($request['chat'] ?? null);
         $this->text = $request['text'] ?? null;
-        $this->entities = new MessageEntitiesTG($request['entities'] ?? null);
+        $this->entities = new MessageEntitiesTG($request['entities'][0] ?? null);
     }
 
 

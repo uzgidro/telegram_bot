@@ -18,12 +18,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function (Controller $controller) {
-//    dd('Hello World!');
-
     $response = Http::get('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/getUpdates');
     $lastUpdate = $response->json()['result'][count($response->json()['result'])-1];
     $controller->parseUpdate($lastUpdate);
-//    dd($response->json()['result'][count($response->json()['result'])-1]);
 });
 
 Route::post('/murojaat', function (Request $request) {
