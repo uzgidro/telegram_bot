@@ -4,6 +4,7 @@ namespace App\Models;
 
 class Destinations
 {
-    public const languageSelect = '/language';
-    public const undefined = '';
+    public const LANGUAGE = '/language';
+    public const HOME = '/';
+    public const UNDEFINED = '';
 }

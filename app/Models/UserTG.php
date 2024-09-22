@@ -8,6 +8,7 @@ class UserTG
     public string $firstName;
     public ?string $lastName;
     public ?string $username;
+    public ?string $languageCode;
 
     /**
      * @param int $id
@@ -25,6 +26,7 @@ class UserTG
         $this->firstName = $data['first_name'];
         $this->lastName = $data['last_name'] ?? null;
         $this->username = $data['username'] ?? null;
+        $this->languageCode = $data['language_code'] ?? null;
     }
 
 

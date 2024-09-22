@@ -23,6 +23,12 @@ Route::get('/', function (Controller $controller) {
     $controller->parseUpdate($lastUpdate);
 });
 
+Route::get('/dd', function () {
+    $response = Http::get('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/getUpdates');
+    $lastUpdate = $response->json()['result'][count($response->json()['result'])-1];
+    dd($lastUpdate);
+});
+
 Route::post('/murojaat', function (Request $request) {
 
     if ($request->input('message.text') == '/start') {
