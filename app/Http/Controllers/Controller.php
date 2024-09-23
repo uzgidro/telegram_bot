@@ -35,23 +35,72 @@ class Controller extends BaseController
         $model = new UpdateTG($update);
         $this->chatId = $model->message->chat->id;
 
-        $user = $this->onCommand($model);
-        if ($user !== null) {
-            $this->onDestination($user);
-            dd(Users::all());
+        if ($model->message->entities->type == 'bot_command') {
+            $this->onCommand($model);
         }
     }
 
     /**
      * @param UpdateTG $model
-     * @return mixed|Users
+     * @return void
      */
-    private function onCommand(UpdateTG $model): ?Users
+    private function onCommand(UpdateTG $model): void
     {
-        if ($model->message->entities->type == 'bot_command') {
-            return $this->onStart($model);
+        if ($model->message->text == '/start') {
+            $this->onStart($model);
         }
-        return null;
+        if ($model->message->text == '/home') {
+            $this->onHome($model);
+        }
+    }
+
+    /**
+     * @param UpdateTG $model
+     * @return void
+     */
+    private function onStart(UpdateTG $model): void
+    {
+        // create user if not exists
+        if (DB::table('users')->where('chat_id', $model->message->chat->id)->doesntExist()) {
+            if ($model->message->from->languageCode !== Languages::RU
+                && $model->message->from->languageCode !== Languages::UZ
+                && $model->message->from->languageCode !== Languages::EN) {
+                $language = Languages::EN;
+            } else {
+                $language = $model->message->from->languageCode;
+            }
+            DB::table('users')->insert([
+                'chat_id' => $model->message->chat->id,
+                'first_name' => $model->message->from->firstName,
+                'last_name' => $model->message->from->lastName,
+                'username' => $model->message->from->username,
+                'destination' => Destinations::HOME,
+                'language' => $language,
+                'created_at' => now(),
+                'updated_at' => now(),
+            ]);
+        }
+
+        // go to home page
+        DB::table('users')
+            ->where('chat_id', $model->message->chat->id)
+            ->where('destination', '!=', Destinations::HOME)
+            ->update(['destination' => Destinations::HOME]);
+        $this->onDestination(Users::createFromData(DB::table('users')->where('chat_id', $model->message->chat->id)->first()));
+    }
+
+    /**
+     * @param UpdateTG $model
+     * @return void
+     */
+    private function onHome(UpdateTG $model): void
+    {
+        // go to home page
+        DB::table('users')
+            ->where('chat_id', $model->message->chat->id)
+            ->where('destination', '!=', Destinations::HOME)
+            ->update(['destination' => Destinations::HOME]);
+        $this->onDestination(Users::createFromData(DB::table('users')->where('chat_id', $model->message->chat->id)->first()));
     }
 
     /**
@@ -78,38 +127,6 @@ class Controller extends BaseController
                 ]),
             ]);
         }
-    }
-
-
-    /**
-     * @param UpdateTG $model
-     * @return mixed|Users
-     */
-    private function onStart(UpdateTG $model): ?Users
-    {
-        if ($model->message->text == '/start') {
-            if (DB::table('users')->where('chat_id', $model->message->chat->id)->doesntExist()) {
-                if ($model->message->from->languageCode !== Languages::RU
-                    && $model->message->from->languageCode !== Languages::UZ
-                    && $model->message->from->languageCode !== Languages::EN) {
-                    $language = Languages::EN;
-                } else {
-                    $language = $model->message->from->languageCode;
-                }
-                DB::table('users')->insert([
-                    'chat_id' => $model->message->chat->id,
-                    'first_name' => $model->message->from->firstName,
-                    'last_name' => $model->message->from->lastName,
-                    'username' => $model->message->from->username,
-                    'destination' => Destinations::HOME,
-                    'language' => $language,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-                return Users::createFromData(DB::table('users')->where('chat_id', $model->message->chat->id)->first());
-            }
-        }
-        return null;
     }
 
 }
