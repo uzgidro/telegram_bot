@@ -4,7 +4,7 @@ namespace App\Models;
 
 class MessageTG
 {
-    public int $messageId;
+    public int $id;
     public ?UserTG $from;
     public ?ChatTG $chat;
     public ?string $text;
@@ -19,7 +19,7 @@ class MessageTG
             return;
         }
 
-        $this->messageId = $request['message_id'];
+        $this->id = $request['message_id'];
         $this->from = new UserTG($request['from'] ?? null);
         $this->chat = new ChatTG($request['chat'] ?? null);
         $this->text = $request['text'] ?? null;

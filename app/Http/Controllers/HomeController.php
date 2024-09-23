@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CallbackData;
 use App\Models\Languages;
 use App\Models\Users;
 use Illuminate\Support\Facades\Http;
@@ -45,7 +46,7 @@ Here you can:
 
 📩 Contact us with a suggestion or question - we are always ready to consider your ideas and help with any questions.
 ⚖️ Report Corruption - If you experience misconduct, please let us know. Your request will remain confidential.
-🌐 Change language - select the bot language.
+🌐 Change language - select bot language.
 
 To get started, simply select an item from the menu below.';
 
@@ -60,9 +61,9 @@ To get started, simply select an item from the menu below.';
             'text' => $text,
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
-                    [['text' => $request, 'callback_data' => 'request']],
-                    [['text' => $corruption, 'callback_data' => 'corruption']],
-                    [['text' => $language, 'callback_data' => 'language']]
+                    [['text' => $request, 'callback_data' => CallbackData::HOME_REQUEST]],
+                    [['text' => $corruption, 'callback_data' => CallbackData::HOME_ANTICOR]],
+                    [['text' => $language, 'callback_data' => CallbackData::HOME_LANGUAGE]]
                 ]
             ]),
         ]);
