@@ -2,14 +2,31 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\service\HttpService;
 use App\Models\CallbackData;
 use App\Models\Languages;
+use App\Models\UpdateTG;
 use App\Models\Users;
 use Illuminate\Support\Facades\Http;
 
 class LanguageController
 {
-    public function index(Users $user): void
+    private HttpService $httpService;
+
+    /**
+     * @param HttpService $httpService
+     */
+    public function __construct(HttpService $httpService)
+    {
+        $this->httpService = $httpService;
+    }
+
+    /**
+     * @param Users $user
+     * @param UpdateTG|null $update
+     * @return void
+     */
+    public function index(Users $user, ?UpdateTG $update): void
     {
         $ru = '🇷🇺 Русский';
         $uz = '🇺🇿 O\'zbek';
@@ -23,6 +40,10 @@ class LanguageController
         } else {
             $text = '🌐 Select bot language.';
             $cancel = '🔙 Cancel';
+        }
+
+        if (isset($update)) {
+            $this->httpService->reactToCallback($update);
         }
 
         Http::post('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/sendMessage', [

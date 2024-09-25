@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Destinations;
+use App\Models\UpdateTG;
 use App\Models\Users;
 
 class DestinationController
@@ -23,15 +24,16 @@ class DestinationController
 
     /**
      * @param Users $user
+     * @param UpdateTG|null $update
      * @return void
      */
-    protected function onDestination(Users $user): void
+    protected function onDestination(Users $user, ?UpdateTG $update = null): void
     {
         if ($user->destination == Destinations::HOME) {
-            $this->homeController->index($user);
+            $this->homeController->index($user, $update);
         }
         if ($user->destination == Destinations::LANGUAGE) {
-            $this->languageController->index($user);
+            $this->languageController->index($user, $update);
         }
     }
 }

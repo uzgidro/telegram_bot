@@ -9,14 +9,21 @@ use Illuminate\Support\Facades\Http;
 
 class HttpService
 {
-    private const BASE_URL = 'https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s';
+    private const BASE_URL = 'https://api.telegram.org/bot';
+    private string $apiUrl;
+
+    public function __construct()
+    {
+        $this->apiUrl = self::BASE_URL.env('TG_KEY');
+    }
+
 
     /**
      * @return Response
      */
     public function getUpdates(): Response
     {
-        return Http::get(self::BASE_URL.'/getUpdates');
+        return Http::get($this->apiUrl.'/getUpdates');
     }
 
     /**
@@ -35,7 +42,7 @@ class HttpService
      */
     private function answerCallbackQuery(int $id): void
     {
-        Http::post("https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/answerCallbackQuery", [
+        Http::post($this->apiUrl.'/answerCallbackQuery', [
             'callback_query_id' => $id,
         ]);
     }
@@ -46,7 +53,7 @@ class HttpService
      */
     private function deleteMessage(MessageTG $message): void
     {
-        Http::post('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/deleteMessage', [
+        Http::post($this->apiUrl.'/deleteMessage', [
             'chat_id' => $message->chat->id,
             'message_id' => $message->id,
         ]);
