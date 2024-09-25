@@ -11,6 +11,7 @@ class Controller extends BaseController
 
     public CommandController $commandController;
     public CallbackController $callbackController;
+    public RecordController $recordController;
 
     /**
      * @param CommandController $commandController
@@ -19,10 +20,12 @@ class Controller extends BaseController
     public function __construct(
         CommandController  $commandController,
         CallbackController $callbackController,
+        RecordController $recordController
     )
     {
         $this->commandController = $commandController;
         $this->callbackController = $callbackController;
+        $this->recordController = $recordController;
     }
 
 
@@ -37,8 +40,11 @@ class Controller extends BaseController
         if (isset($model->message->entities->type) && $model->message->entities->type == 'bot_command') {
             $this->commandController->index($model);
         }
-        if (isset($model->callbackQuery->data)) {
+        elseif (isset($model->callbackQuery->data)) {
             $this->callbackController->index($model);
+        }
+        else {
+            $this->recordController->index($model);
         }
     }
 

@@ -34,6 +34,9 @@ class CallbackController
         if ($update->callbackQuery->data == CallbackData::HOME_LANGUAGE) {
             $this->dao->setDestination($update->callbackQuery->message->chat->id, Destinations::LANGUAGE);
         }
+        if ($update->callbackQuery->data == CallbackData::HOME_ANTICOR) {
+            $this->dao->setDestination($update->callbackQuery->message->chat->id, Destinations::ANTICOR_NEW_RECORD);
+        }
         if ($update->callbackQuery->data == CallbackData::LANGUAGE_RU) {
             $this->dao->setLanguage($update->callbackQuery->message->chat->id, Languages::RU);
         }
@@ -43,7 +46,7 @@ class CallbackController
         if ($update->callbackQuery->data == CallbackData::LANGUAGE_EN) {
             $this->dao->setLanguage($update->callbackQuery->message->chat->id, Languages::EN);
         }
-        if ($update->callbackQuery->data == CallbackData::LANGUAGE_CANCEL) {
+        if ($update->callbackQuery->data == CallbackData::CANCEL) {
             $this->dao->setDestination($update->callbackQuery->message->chat->id, Destinations::HOME);
         }
         $this->destinationController->index(Users::createFromData($this->dao->getUser($update->callbackQuery->message->chat->id)), $update);

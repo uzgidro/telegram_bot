@@ -54,7 +54,7 @@ class LanguageController
                     [['text' => $ru, 'callback_data' => CallbackData::LANGUAGE_RU]],
                     [['text' => $uz, 'callback_data' => CallbackData::LANGUAGE_UZ]],
                     [['text' => $en, 'callback_data' => CallbackData::LANGUAGE_EN]],
-                    [['text' => $cancel, 'callback_data' => CallbackData::LANGUAGE_CANCEL]],
+                    [['text' => $cancel, 'callback_data' => CallbackData::CANCEL]],
                 ]
             ]),
         ]);

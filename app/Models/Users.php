@@ -10,7 +10,7 @@ class Users extends Model
 {
     use HasFactory;
 
-    public string $chat_id;
+    public int $chat_id;
     public ?string $username;
     public string $first_name;
     public ?string $last_name;

@@ -3,7 +3,6 @@
 namespace App\Dao;
 
 use App\Models\Destinations;
-use App\Models\Languages;
 use App\Models\MessageTG;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -21,12 +20,17 @@ class UsersDao
         return DB::table('users')->where('chat_id', $id)->doesntExist();
     }
 
+    public function inOnDestination(int $id, string $destination): bool
+    {
+        return DB::table('users')->where('chat_id', $id)->where('destination', $destination)->exists();
+    }
+
     /**
      * @param MessageTG $message
-     * @param Languages $language
+     * @param string $language
      * @return void
      */
-    public function createNewUser(MessageTG $message, Languages $language): void
+    public function createNewUser(MessageTG $message, string $language): void
     {
         DB::table('users')->insert([
             'chat_id' => $message->chat->id,

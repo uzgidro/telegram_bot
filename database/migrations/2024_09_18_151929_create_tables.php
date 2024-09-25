@@ -14,7 +14,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('users', function (Blueprint $table) {
-            $table->string('chat_id')->primary()->unique();
+            $table->bigInteger('chat_id')->primary()->unique();
             $table->string('first_name')->nullable();
             $table->string('username')->nullable();
             $table->string('last_name')->nullable();

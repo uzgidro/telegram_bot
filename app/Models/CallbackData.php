@@ -11,5 +11,5 @@ class CallbackData
     public const LANGUAGE_RU = 'LANGUAGE_RU';
     public const LANGUAGE_EN = 'LANGUAGE_EN';
     public const LANGUAGE_UZ = 'LANGUAGE_UZ';
-    public const LANGUAGE_CANCEL = 'LANGUAGE_CANCEL';
+    public const CANCEL = 'CANCEL';
 }
