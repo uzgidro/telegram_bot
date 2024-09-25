@@ -27,7 +27,7 @@ class DestinationController
      * @param UpdateTG|null $update
      * @return void
      */
-    protected function onDestination(Users $user, ?UpdateTG $update = null): void
+    public function index(Users $user, ?UpdateTG $update = null): void
     {
         if ($user->destination == Destinations::HOME) {
             $this->homeController->index($user, $update);

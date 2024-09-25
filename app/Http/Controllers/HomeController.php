@@ -72,7 +72,7 @@ To get started, simply select an item from the menu below.';
             $language = '🌐 Change language';
         }
 
-        if (isset($update)) {
+        if (isset($update->callbackQuery->id)) {
             $this->httpService->reactToCallback($update);
         }
 

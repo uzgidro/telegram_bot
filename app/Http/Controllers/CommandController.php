@@ -2,14 +2,28 @@
 
 namespace App\Http\Controllers;
 
+use App\Dao\UsersDao;
 use App\Models\Destinations;
 use App\Models\Languages;
 use App\Models\UpdateTG;
 use App\Models\Users;
-use Illuminate\Support\Facades\DB;
 
-class CommandController extends DestinationController
+class CommandController
 {
+    private UsersDao $dao;
+    private DestinationController $destinationController;
+
+    /**
+     * @param UsersDao $dao
+     * @param DestinationController $controller
+     */
+    public function __construct(UsersDao $dao, DestinationController $controller)
+    {
+        $this->dao = $dao;
+        $this->destinationController = $controller;
+    }
+
+
     /**
      * @param UpdateTG $model
      * @return void
@@ -26,51 +40,36 @@ class CommandController extends DestinationController
 
 
     /**
-     * @param UpdateTG $model
+     * @param UpdateTG $update
      * @return void
      */
-    private function onStartCommand(UpdateTG $model): void
+    private function onStartCommand(UpdateTG $update): void
     {
         // create user if not exists
-        if (DB::table('users')->where('chat_id', $model->message->chat->id)->doesntExist()) {
-            if ($model->message->from->languageCode !== Languages::RU
-                && $model->message->from->languageCode !== Languages::UZ
-                && $model->message->from->languageCode !== Languages::EN) {
+        if ($this->dao->userDoesNotExist($update->message->chat->id)) {
+            if ($update->message->from->languageCode !== Languages::RU
+                && $update->message->from->languageCode !== Languages::UZ
+                && $update->message->from->languageCode !== Languages::EN) {
                 $language = Languages::EN;
             } else {
-                $language = $model->message->from->languageCode;
+                $language = $update->message->from->languageCode;
             }
-            DB::table('users')->insert([
-                'chat_id' => $model->message->chat->id,
-                'first_name' => $model->message->from->firstName,
-                'last_name' => $model->message->from->lastName,
-                'username' => $model->message->from->username,
-                'destination' => Destinations::HOME,
-                'language' => $language,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
+            $this->dao->createNewUser($update->message, $language);
         }
 
         // go to home page
-        DB::table('users')
-            ->where('chat_id', $model->message->chat->id)
-            ->where('destination', '!=', Destinations::HOME)
-            ->update(['destination' => Destinations::HOME]);
-        $this->onDestination(Users::createFromData(DB::table('users')->where('chat_id', $model->message->chat->id)->first()));
+        $this->dao->setDestination($update->message->chat->id, Destinations::HOME);
+        $this->destinationController->index(Users::createFromData($this->dao->getUser($update->message->chat->id)));
     }
 
     /**
-     * @param UpdateTG $model
+     * @param UpdateTG $update
      * @return void
      */
-    private function onHomeCommand(UpdateTG $model): void
+    private function onHomeCommand(UpdateTG $update): void
     {
         // go to home page
-        DB::table('users')
-            ->where('chat_id', $model->message->chat->id)
-            ->where('destination', '!=', Destinations::HOME)
-            ->update(['destination' => Destinations::HOME]);
-        $this->onDestination(Users::createFromData(DB::table('users')->where('chat_id', $model->message->chat->id)->first()));
+        $this->dao->setDestination($update->message->chat->id, Destinations::HOME);
+        $this->destinationController->index(Users::createFromData($this->dao->getUser($update->message->chat->id)));
     }
 }

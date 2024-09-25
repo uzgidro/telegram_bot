@@ -42,7 +42,7 @@ class LanguageController
             $cancel = '🔙 Cancel';
         }
 
-        if (isset($update)) {
+        if (isset($update->callbackQuery->id)) {
             $this->httpService->reactToCallback($update);
         }
 
