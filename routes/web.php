@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Controller;
+use App\Http\service\HttpService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Http;
@@ -17,8 +18,8 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function (Controller $controller) {
-    $response = Http::get('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/getUpdates');
+Route::get('/', function (HttpService $httpService, Controller $controller) {
+    $response = $httpService->getUpdates();
     $lastUpdate = $response->json()['result'][count($response->json()['result'])-1];
     $controller->parseUpdate($lastUpdate);
 });
