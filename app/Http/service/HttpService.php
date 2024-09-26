@@ -40,7 +40,7 @@ class HttpService
      * @param int $id
      * @return void
      */
-    private function answerCallbackQuery(int $id): void
+    public function answerCallbackQuery(int $id): void
     {
         Http::post($this->apiUrl.'/answerCallbackQuery', [
             'callback_query_id' => $id,

@@ -12,6 +12,7 @@ class DestinationController
     private AnticorController $anticorController;
     private MurojaatController $murojaatController;
     private LanguageController $languageController;
+    private AdminController $adminController;
 
     /**
      * @param HomeController $homeController
@@ -24,12 +25,14 @@ class DestinationController
         AnticorController $anticorController,
         LanguageController $languageController,
         MurojaatController $murojaatController,
+        AdminController $adminController
     )
     {
         $this->homeController = $homeController;
         $this->anticorController = $anticorController;
         $this->languageController = $languageController;
         $this->murojaatController = $murojaatController;
+        $this->adminController = $adminController;
     }
 
 
@@ -48,6 +51,9 @@ class DestinationController
         }
         if ($user->destination == Destinations::MUROJAAT_NEW_RECORD) {
             $this->murojaatController->index($user, $update);
+        }
+        if ($user->destination == Destinations::ANTICOR_ADMIN) {
+            $this->adminController->anticor($user, $update);
         }
         if ($user->destination == Destinations::LANGUAGE) {
             $this->languageController->index($user, $update);
