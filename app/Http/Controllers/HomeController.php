@@ -42,6 +42,8 @@ class HomeController
             $request = '📩 Предложение или вопрос';
             $corruption = '⚖️ Сообщить о коррупции';
             $language = '🌐 Сменить язык';
+            $incomeMurojaat = '📥 Поступившие предложения';
+            $incomeAnticor = '⚠️ Поступившие жалобы';
         } elseif ($user->language == Languages::UZ) {
             $text = '👋 Salom! Siz O\'zbek Gidro Energo kompaniyasining rasmiy botidasiz.
 
@@ -56,6 +58,8 @@ Boshlash uchun quyidagi menyudan biror bandni tanlang.';
             $request = '📩 Taklif yoki savol';
             $corruption = '⚖️ Korrupsiya haqida xabar berish';
             $language = '🌐 Tilni o\'zgartirish';
+            $incomeMurojaat = '📥 Kelgan takliflar';
+            $incomeAnticor = '⚠️ Kelgan shikoyatlar';
         } else {
             $text = '👋 Hello! You are in the official bot of Uzbek Hydro Energy.
 
@@ -70,6 +74,8 @@ To get started, simply select an item from the menu below.';
             $request = '📩 Suggestion or question';
             $corruption = '⚖️ Report Corruption';
             $language = '🌐 Change language';
+            $incomeMurojaat = '📥 Received suggestions';
+            $incomeAnticor = '⚠️ Received complaints';
         }
 
         if (isset($update->callbackQuery->id)) {
@@ -83,7 +89,9 @@ To get started, simply select an item from the menu below.';
                 'inline_keyboard' => [
                     [['text' => $request, 'callback_data' => CallbackData::HOME_MUROJAAT]],
                     [['text' => $corruption, 'callback_data' => CallbackData::HOME_ANTICOR]],
-                    [['text' => $language, 'callback_data' => CallbackData::HOME_LANGUAGE]]
+                    [['text' => $language, 'callback_data' => CallbackData::HOME_LANGUAGE]],
+                    $user->is_admin || $user->is_murojaat ? [['text' => $incomeMurojaat, 'callback_data' => CallbackData::INCOME_MUROJAAT]] : [],
+                    $user->is_admin || $user->is_anticor ? [['text' => $incomeAnticor, 'callback_data' => CallbackData::INCOME_ANTICOR]] : [],
                 ]
             ]),
         ]);

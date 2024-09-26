@@ -20,6 +20,11 @@ class UsersDao
         return DB::table('users')->where('chat_id', $id)->doesntExist();
     }
 
+    /**
+     * @param int $id
+     * @param string $destination
+     * @return bool
+     */
     public function inOnDestination(int $id, string $destination): bool
     {
         return DB::table('users')->where('chat_id', $id)->where('destination', $destination)->exists();

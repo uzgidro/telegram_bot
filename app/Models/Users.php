@@ -52,9 +52,9 @@ class Users extends Model
         $user->last_name = $data->last_name ?? null; // Если last_name отсутствует, установим null
         $user->language = $data->language ?? null; // Если language отсутствует, установим null
         $user->destination = $data->destination ?? null; // Если destination отсутствует, установим null
-        $user->is_admin = $data->is_admin ?? null; // Если is_admin отсутствует, установим null
-        $user->is_anticor = $data->is_anticor ?? null; // Если is_anticor отсутствует, установим null
-        $user->is_murojaat = $data->is_murojaat ?? null; // Если is_murojaat отсутствует, установим null
+        $user->is_admin = $data->is_admin ?? false; // Если is_admin отсутствует, установим false
+        $user->is_anticor = $data->is_anticor ?? false; // Если is_anticor отсутствует, установим false
+        $user->is_murojaat = $data->is_murojaat ?? false; // Если is_murojaat отсутствует, установим false
 
         // Преобразуем даты в формат DateTime, если они присутствуют
         $user->created_at = isset($data->created_at) ?

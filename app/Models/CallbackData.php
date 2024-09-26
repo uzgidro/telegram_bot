@@ -7,6 +7,8 @@ class CallbackData
     public const HOME_MUROJAAT = 'HOME_MUROJAAT';
     public const HOME_ANTICOR = 'HOME_ANTICOR';
     public const HOME_LANGUAGE = 'HOME_LANGUAGE';
+    public const INCOME_MUROJAAT = 'INCOME_MUROJAAT';
+    public const INCOME_ANTICOR = 'INCOME_ANTICOR';
 
     public const LANGUAGE_RU = 'LANGUAGE_RU';
     public const LANGUAGE_EN = 'LANGUAGE_EN';
