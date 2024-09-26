@@ -9,7 +9,7 @@ use App\Models\UpdateTG;
 use App\Models\Users;
 use Illuminate\Support\Facades\Http;
 
-class AnticorController
+class MurojaatController
 {
     private HttpService $httpService;
 
@@ -31,7 +31,7 @@ class AnticorController
         if ($user->language == Languages::RU) {
             $text = 'Здравствуйте!
 
-Если вы столкнулись со случаями коррупции (злоупотребление служебным положением, взяточничество, жадность, мошенничество и т.п.) в сфере гидроэнергетики, вы можете сообщить о них через этого бота.
+Если у вас есть вопросы по деятельности организации или предложения для улучшения, то вы можете сообщить о них через этого бота.
 
 Для того чтобы заявка была рассмотрена полностью и всесторонне, Вам необходимо заполнить следующую информацию.
 1. 📝 Ф.И.О;
@@ -54,7 +54,7 @@ class AnticorController
         } elseif ($user->language == Languages::UZ) {
             $text = 'Assalomu alaykum!
 
-Agar Siz gidroenergetika sohasida  korrupsiya holatlariga (mansabini suiiste’mol qilish, poraxo‘rlik, tamagirlik, firibgarlik va x.k.) duch kelgan bo‘lsangiz, ular haqida ushbu bot orqali xabar berishingiz mumkin.
+Tashkilot faoliyatiga oid savollaringiz yoki takomillashtirish bo\'yicha takliflaringiz bo\'lsa, ushbu bot orqali xabar berishingiz mumkin.
 
 Murojaat to‘liq va atroflicha ko‘rib chiqilishi uchun quyidagi ma’lumotlarni to‘ldirishingiz lozim.
 1. 📝 F.I.Sh;
@@ -77,7 +77,7 @@ Murojaat to‘liq va atroflicha ko‘rib chiqilishi uchun quyidagi ma’lumotlar
         } else {
             $text = 'Greetings!
 
-If you have encountered cases of corruption (abuse of office, bribery, greed, fraud, etc.) in the field of hydropower, you can report them through this bot.
+If you have questions about the organization’s activities or suggestions for improvement, you can report them through this bot.
 
 In order for the application to be considered completely and comprehensively, you need to fill in the following information.
 1. 📝 First name, Last name;
@@ -99,7 +99,6 @@ To contact "Uzbekgidroenergo" JSC:
             $cancel = '🔙 Cancel';
         }
 
-
         if (isset($update->callbackQuery->id)) {
             $this->httpService->reactToCallback($update);
         }
@@ -118,16 +117,13 @@ To contact "Uzbekgidroenergo" JSC:
     public function newRecord(Users $user): void
     {
         if ($user->language == Languages::RU) {
-            $text = 'Спасибо за ваше обращение о коррупции. Мы приняли вашу информацию к сведению и передали ее в соответствующие органы для дальнейшего расследования.
-Мы ценим вашу активную позицию и готовность бороться с коррупцией.';
+            $text = 'Спасибо за ваше обращение! Мы ценим ваше время и заботу. Ваш запрос успешно получен, и мы постараемся ответить на него как можно скорее.';
             $cancel = '🔙 На главную';
         } elseif ($user->language == Languages::UZ) {
-            $text = 'Korrupsiya haqidagi xabaringiz uchun tashakkur. Biz sizning murojaatingizni hisobga oldik va tekshiruv ishlari uchun tegishli organlarga yubordik.
-Sizning faolligingiz va korrupsiyaga qarshi kurashga tayyorligingizni qadrlaymiz.';
+            $text = 'Murojaatingiz uchun rahmat! Vaqtingiz va tashvishingizni qadrlaymiz. Sizning so\'rovingiz muvaffaqiyatli qabul qilindi va biz unga imkon qadar tezroq javob berishga harakat qilamiz.';
             $cancel = '🔙 Bosh sahifaga';
         } else {
-            $text = 'Thank you for your message about corruption. We have taken note of your information and forwarded it to the appropriate authorities for further investigation.
-We appreciate your active position and willingness to fight corruption.';
+            $text = 'Thank you for your request! We appreciate your time and concern. Your request has been successfully received and we will try to respond to it as soon as possible.';
             $cancel = '🔙 Home';
         }
 

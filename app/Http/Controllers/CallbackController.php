@@ -37,6 +37,9 @@ class CallbackController
         if ($update->callbackQuery->data == CallbackData::HOME_ANTICOR) {
             $this->dao->setDestination($update->callbackQuery->message->chat->id, Destinations::ANTICOR_NEW_RECORD);
         }
+        if ($update->callbackQuery->data == CallbackData::HOME_MUROJAAT) {
+            $this->dao->setDestination($update->callbackQuery->message->chat->id, Destinations::MUROJAAT_NEW_RECORD);
+        }
         if ($update->callbackQuery->data == CallbackData::LANGUAGE_RU) {
             $this->dao->setLanguage($update->callbackQuery->message->chat->id, Languages::RU);
         }

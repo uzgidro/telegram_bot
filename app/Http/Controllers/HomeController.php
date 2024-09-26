@@ -81,7 +81,7 @@ To get started, simply select an item from the menu below.';
             'text' => $text,
             'reply_markup' => json_encode([
                 'inline_keyboard' => [
-                    [['text' => $request, 'callback_data' => CallbackData::HOME_REQUEST]],
+                    [['text' => $request, 'callback_data' => CallbackData::HOME_MUROJAAT]],
                     [['text' => $corruption, 'callback_data' => CallbackData::HOME_ANTICOR]],
                     [['text' => $language, 'callback_data' => CallbackData::HOME_LANGUAGE]]
                 ]
