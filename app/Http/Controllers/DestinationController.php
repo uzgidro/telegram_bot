@@ -19,6 +19,7 @@ class DestinationController
      * @param AnticorController $anticorController
      * @param LanguageController $languageController
      * @param MurojaatController $murojaatController
+     * @param AdminController $adminController
      */
     public function __construct(
         HomeController $homeController,

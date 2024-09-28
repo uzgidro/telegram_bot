@@ -9,12 +9,11 @@ class CallbackData
     public const HOME_ANTICOR = 'HOME_ANTICOR';
     public const HOME_LANGUAGE = 'HOME_LANGUAGE';
     public const INCOME_MUROJAAT = 'INCOME_MUROJAAT';
-    public const INCOME_ANTICOR = 'INCOME_ANTICOR';
 
-    // Paging
-    public const ANTICOR_PAGING_PREFIX = 'ANTICOR_PAGING';
-    public const ANTICOR_PAGING_FIRST = 'ANTICOR_PAGING_FIRST';
-    public const ANTICOR_PAGING_LAST = 'ANTICOR_PAGING_LAST';
+    // Anticor admin
+    public const INCOME_ANTICOR = 'INCOME_ANTICOR';
+    public const INCOME_ANTICOR_FIRST = 'INCOME_ANTICOR_FIRST';
+    public const INCOME_ANTICOR_LAST = 'INCOME_ANTICOR_LAST';
 
     // Languages
     public const LANGUAGE_RU = 'LANGUAGE_RU';
