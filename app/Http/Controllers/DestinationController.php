@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\CallbackData;
 use App\Models\Destinations;
+use App\Models\MessageType;
 use App\Models\UpdateTG;
 use App\Models\Users;
 
@@ -22,11 +24,11 @@ class DestinationController
      * @param AdminController $adminController
      */
     public function __construct(
-        HomeController $homeController,
-        AnticorController $anticorController,
+        HomeController     $homeController,
+        AnticorController  $anticorController,
         LanguageController $languageController,
         MurojaatController $murojaatController,
-        AdminController $adminController
+        AdminController    $adminController
     )
     {
         $this->homeController = $homeController;
@@ -54,7 +56,20 @@ class DestinationController
             $this->murojaatController->index($user, $update);
         }
         if ($user->destination == Destinations::ANTICOR_ADMIN) {
-            $this->adminController->anticor($user, $update);
+            $this->adminController->receiveIncomeMessages(
+                $user,
+                $update,
+                CallbackData::INCOME_ANTICOR,
+                MessageType::ANTICOR
+            );
+        }
+        if ($user->destination == Destinations::MUROJAAT_ADMIN) {
+            $this->adminController->receiveIncomeMessages(
+                $user,
+                $update,
+                CallbackData::INCOME_MUROJAAT,
+                MessageType::MUROJAAT
+            );
         }
         if ($user->destination == Destinations::LANGUAGE) {
             $this->languageController->index($user, $update);
