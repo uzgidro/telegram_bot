@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Destinations;
+use App\Constants\MessageType;
 use App\Dao\MessagesDao;
 use App\Dao\UsersDao;
-use App\Models\Destinations;
-use App\Models\MessageType;
 use App\Models\UpdateTG;
 use App\Models\Users;
 
@@ -35,6 +35,10 @@ class RecordController
         $this->murojaatController = $murojaatController;
     }
 
+    /**
+     * @param UpdateTG $update
+     * @return void
+     */
     public function index(UpdateTG $update): void
     {
         if ($this->usersDao->inOnDestination($update->message->chat->id, Destinations::ANTICOR_NEW_RECORD)) {

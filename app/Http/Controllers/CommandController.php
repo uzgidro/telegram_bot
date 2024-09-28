@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Destinations;
+use App\Constants\Languages;
 use App\Dao\UsersDao;
-use App\Models\Destinations;
-use App\Models\Languages;
 use App\Models\UpdateTG;
 use App\Models\Users;
 

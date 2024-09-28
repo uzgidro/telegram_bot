@@ -2,9 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\CallbackData;
-use App\Models\Destinations;
-use App\Models\MessageType;
+use App\Constants\CallbackData;
+use App\Constants\Destinations;
+use App\Constants\MessageType;
 use App\Models\UpdateTG;
 use App\Models\Users;
 

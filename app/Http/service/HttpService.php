@@ -36,6 +36,12 @@ class HttpService
         $this->deleteMessage($update->callbackQuery->message);
     }
 
+    /**
+     * @param int $chatId
+     * @param string $text
+     * @param array $inlineKeyboard
+     * @return void
+     */
     public function sendMessage(int $chatId, string $text, array $inlineKeyboard): void
     {
         Http::post($this->apiUrl.'/sendMessage', [

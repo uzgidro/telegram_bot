@@ -16,6 +16,7 @@ class Controller extends BaseController
     /**
      * @param CommandController $commandController
      * @param CallbackController $callbackController
+     * @param RecordController $recordController
      */
     public function __construct(
         CommandController  $commandController,

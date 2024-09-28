@@ -2,7 +2,7 @@
 
 namespace App\Dao;
 
-use App\Models\Destinations;
+use App\Constants\Destinations;
 use App\Models\MessageTG;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Query\Builder;
@@ -71,6 +71,11 @@ class UsersDao
             ->update(['destination' => $destination]);
     }
 
+    /**
+     * @param int $id
+     * @param string $language
+     * @return void
+     */
     public function setLanguage(int $id, string $language): void
     {
         DB::table('users')->where('chat_id', $id)

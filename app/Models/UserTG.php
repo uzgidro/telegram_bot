@@ -11,10 +11,7 @@ class UserTG
     public ?string $languageCode;
 
     /**
-     * @param int $id
-     * @param string $firstName
-     * @param string|null $lastName
-     * @param string|null $username
+     * @param mixed $data
      */
     public function __construct(mixed $data)
     {

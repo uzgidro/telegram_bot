@@ -2,28 +2,32 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Buttons;
+use App\Constants\CallbackData;
+use App\Constants\Languages;
+use App\Dao\MessagesDao;
 use App\Http\service\HttpService;
-use App\Models\CallbackData;
 use App\Models\InlineButton;
-use App\Models\Languages;
 use App\Models\UpdateTG;
 use App\Models\Users;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 
 class AdminController
 {
     private HttpService $httpService;
+    private MessagesDao $messagesDao;
     private const LIMIT = 5;
     private const POSTFIX_FIRST = '_FIRST';
     private const POSTFIX_LAST = '_LAST';
 
     /**
      * @param HttpService $httpService
+     * @param MessagesDao $messagesDao
      */
-    public function __construct(HttpService $httpService)
+    public function __construct(HttpService $httpService, MessagesDao $messagesDao)
     {
         $this->httpService = $httpService;
+        $this->messagesDao = $messagesDao;
     }
 
     /**
@@ -42,7 +46,7 @@ class AdminController
     {
         if (str_starts_with($update->callbackQuery->data, $callbackType)) {
             $callbackData = $update->callbackQuery->data;
-            $count = DB::table('messages')->where('type', $messageType)->count();
+            $count = $this->messagesDao->getMessagesCount($messageType);
             $pageCount = floor($count / self::LIMIT);
 
             // Set page
@@ -52,7 +56,6 @@ class AdminController
 
             $offset = $currentPage * 5;
 
-            $cancelText = $this->setCancelText($user);
 
             // Buttons
             $firstPage = new InlineButton('⏪', $callbackType . self::POSTFIX_FIRST);
@@ -60,9 +63,8 @@ class AdminController
             $current = new InlineButton($currentPage + 1 . '/' . $pageCount + 1, CallbackData::BLANK);
             $nextPage = new InlineButton('▶️', $callbackType . ($currentPage + 1));
             $lastPage = new InlineButton('⏩', $callbackType . self::POSTFIX_LAST);
-            $cancelButton = new InlineButton($cancelText, CallbackData::CANCEL);
 
-            $collection = DB::table('messages')->where('type', $messageType)->limit(self::LIMIT)->offset($offset)->get();
+            $collection = $this->messagesDao->getMessages($messageType, self::LIMIT, $offset);;
             $text = $this->setText($collection, $user->language);
 
             if (isset($update->callbackQuery->message->chat->id)) {
@@ -86,35 +88,9 @@ class AdminController
                         $currentPage < $pageCount ? $lastPage->toArray() : null,
                     ])),
                     // Добавляем кнопку отмены
-                    [$cancelButton->toArray()],
+                    [Buttons::getHomeButton($user->language)],
                 ]);
         }
-    }
-
-    /**
-     * @param Users $user
-     * @return string
-     */
-    public function setCancelText(Users $user): string
-    {
-        switch ($user->language) {
-            case Languages::RU:
-            {
-                $cancelText = '🔙 На главную';
-                break;
-            }
-            case Languages::UZ:
-            {
-                $cancelText = '🔙 Bosh sahifaga';
-                break;
-            }
-            default:
-            {
-                $cancelText = '🔙 Home';
-                break;
-            }
-        }
-        return $cancelText;
     }
 
     /**
@@ -122,7 +98,7 @@ class AdminController
      * @param string $language
      * @return string
      */
-    private function setText(Collection $collection, string $language)
+    private function setText(Collection $collection, string $language): string
     {
         $text = '';
         if (count($collection) > 0) {

@@ -2,12 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\Buttons;
+use App\Constants\Languages;
 use App\Http\service\HttpService;
-use App\Models\CallbackData;
-use App\Models\Languages;
 use App\Models\UpdateTG;
 use App\Models\Users;
-use Illuminate\Support\Facades\Http;
 
 class MurojaatController
 {
@@ -49,8 +48,6 @@ class MurojaatController
 
 - ⏰ Рабочее время: 09:00-18:00 (Обед: 13:00-14:00)
 - 📅 Рабочие дни: понедельник-пятница.';
-
-            $cancel = '🔙 Отмена';
         } elseif ($user->language == Languages::UZ) {
             $text = 'Assalomu alaykum!
 
@@ -72,8 +69,6 @@ Murojaat to‘liq va atroflicha ko‘rib chiqilishi uchun quyidagi ma’lumotlar
 
 - ⏰ Ish vaqti: 09:00-18:00 (Tushlik: 13:00-14:00)
 - 📅 Ish kunlari: Dushanba - Juma';
-
-            $cancel = '🔙 Bekor qilish';
         } else {
             $text = 'Greetings!
 
@@ -95,46 +90,37 @@ To contact "Uzbekgidroenergo" JSC:
 
 - ⏰ Working hours: 09:00-18:00 (Lunch: 13:00-14:00)
 - 📅 Working days: Monday - Friday';
-
-            $cancel = '🔙 Cancel';
         }
 
         if (isset($update->callbackQuery->id)) {
             $this->httpService->reactToCallback($update);
         }
 
-        Http::post('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/sendMessage', [
-            'chat_id' => $user->chat_id,
-            'text' => $text,
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [['text' => $cancel, 'callback_data' => CallbackData::CANCEL]],
-                ]
-            ]),
-        ]);
+        $this->httpService->sendMessage(
+            $user->chat_id,
+            $text,
+            [[Buttons::getCancelButton($user->language)]]
+        );
     }
 
+    /**
+     * @param Users $user
+     * @return void
+     */
     public function newRecord(Users $user): void
     {
         if ($user->language == Languages::RU) {
             $text = 'Спасибо за ваше обращение! Мы ценим ваше время и заботу. Ваш запрос успешно получен, и мы постараемся ответить на него как можно скорее.';
-            $cancel = '🔙 На главную';
         } elseif ($user->language == Languages::UZ) {
             $text = 'Murojaatingiz uchun rahmat! Vaqtingiz va tashvishingizni qadrlaymiz. Sizning so\'rovingiz muvaffaqiyatli qabul qilindi va biz unga imkon qadar tezroq javob berishga harakat qilamiz.';
-            $cancel = '🔙 Bosh sahifaga';
         } else {
             $text = 'Thank you for your request! We appreciate your time and concern. Your request has been successfully received and we will try to respond to it as soon as possible.';
-            $cancel = '🔙 Home';
         }
 
-        Http::post('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/sendMessage', [
-            'chat_id' => $user->chat_id,
-            'text' => $text,
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [['text' => $cancel, 'callback_data' => CallbackData::CANCEL]],
-                ]
-            ]),
-        ]);
+        $this->httpService->sendMessage(
+            $user->chat_id,
+            $text,
+            [[Buttons::getHomeButton($user->language)]]
+        );
     }
 }

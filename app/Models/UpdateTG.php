@@ -9,9 +9,7 @@ class UpdateTG
     public ?CallbackQueryTG $callbackQuery;
 
     /**
-     * @param int $updateId
-     * @param MessageTG $message
-     * @param CallbackQueryTG $callbackQuery
+     * @param mixed $request
      */
     public function __construct(mixed $request)
     {

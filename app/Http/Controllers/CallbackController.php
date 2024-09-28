@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\CallbackData;
+use App\Constants\Destinations;
+use App\Constants\Languages;
 use App\Dao\UsersDao;
 use App\Http\service\HttpService;
-use App\Models\CallbackData;
 use App\Models\CallbackQueryTG;
-use App\Models\Destinations;
-use App\Models\Languages;
 use App\Models\UpdateTG;
 use App\Models\Users;
 
@@ -19,6 +19,7 @@ class CallbackController
 
     /**
      * @param UsersDao $dao
+     * @param HttpService $httpService
      * @param DestinationController $destinationController
      */
     public function __construct(

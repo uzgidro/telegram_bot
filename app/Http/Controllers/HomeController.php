@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Constants\CallbackData;
+use App\Constants\Languages;
 use App\Http\service\HttpService;
-use App\Models\CallbackData;
-use App\Models\Languages;
+use App\Models\InlineButton;
 use App\Models\UpdateTG;
 use App\Models\Users;
-use Illuminate\Support\Facades\Http;
 
 class HomeController
 {
@@ -82,18 +82,22 @@ To get started, simply select an item from the menu below.';
             $this->httpService->reactToCallback($update);
         }
 
-        Http::post('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/sendMessage', [
-            'chat_id' => $user->chat_id,
-            'text' => $text,
-            'reply_markup' => json_encode([
-                'inline_keyboard' => [
-                    [['text' => $request, 'callback_data' => CallbackData::HOME_MUROJAAT]],
-                    [['text' => $corruption, 'callback_data' => CallbackData::HOME_ANTICOR]],
-                    [['text' => $language, 'callback_data' => CallbackData::HOME_LANGUAGE]],
-                    $user->is_admin || $user->is_murojaat ? [['text' => $incomeMurojaat, 'callback_data' => CallbackData::INCOME_MUROJAAT]] : [],
-                    $user->is_admin || $user->is_anticor ? [['text' => $incomeAnticor, 'callback_data' => CallbackData::INCOME_ANTICOR]] : [],
-                ]
-            ]),
-        ]);
+        $requestButton = new InlineButton($request, CallbackData::HOME_MUROJAAT);
+        $corruptionButton = new InlineButton($corruption, CallbackData::HOME_ANTICOR);
+        $languageButton = new InlineButton($language, CallbackData::HOME_LANGUAGE);
+        $murojaatAdminButton = new InlineButton($incomeMurojaat, CallbackData::INCOME_MUROJAAT);
+        $anticorAdminButton = new InlineButton($incomeAnticor, CallbackData::INCOME_ANTICOR);
+
+        $this->httpService->sendMessage(
+            $user->chat_id,
+            $text,
+            [
+                [$requestButton->toArray()],
+                [$corruptionButton->toArray()],
+                [$languageButton->toArray()],
+                $user->is_admin || $user->is_murojaat ? [$murojaatAdminButton->toArray()] : [],
+                $user->is_admin || $user->is_anticor ? [$anticorAdminButton->toArray()] : [],
+            ]
+        );
     }
 }

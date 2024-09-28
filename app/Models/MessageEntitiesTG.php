@@ -9,9 +9,7 @@ class MessageEntitiesTG
     public string $type;
 
     /**
-     * @param int $offset
-     * @param int $length
-     * @param string $type
+     * @param mixed $data
      */
     public function __construct(mixed $data)
     {
