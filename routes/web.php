@@ -24,9 +24,9 @@ Route::get('/', function (HttpService $httpService, Controller $controller) {
     $controller->parseUpdate($lastUpdate);
 });
 
-Route::get('/dd', function () {
-    $response = Http::get('https://api.telegram.org/bot7849210506:AAHwUp5nF6nWxxfEoEH8NVBP6CwyRtHUx7s/getUpdates');
-    $lastUpdate = $response->json()['result'][count($response->json()['result'])-1];
+Route::get('/dd', function (HttpService $httpService) {
+    $response = $httpService->getUpdates();
+    $lastUpdate = $response->json();
     dd($lastUpdate);
 });
 
