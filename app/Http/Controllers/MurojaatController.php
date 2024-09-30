@@ -53,17 +53,17 @@ class MurojaatController
 
 Tashkilot faoliyatiga oid savollaringiz yoki takomillashtirish bo\'yicha takliflaringiz bo\'lsa, ushbu bot orqali xabar berishingiz mumkin.
 
-Murojaat to‘liq va atroflicha ko‘rib chiqilishi uchun quyidagi ma’lumotlarni to‘ldirishingiz lozim.
+Murojaat to\'liq va atroflicha ko\'rib chiqilishi uchun quyidagi ma’lumotlarni to\'ldirishingiz lozim.
 1. 📝 F.I.Sh;
 2. 📞 Telefon raqamingiz;
-3. 📍 Qaysi tuman yoki hudud bo‘yicha murojaat qilyapsiz?
+3. 📍 Qaysi tuman yoki hudud bo\'yicha murojaat qilyapsiz?
 4. 📄 Murojaat mazmuni
 
-"O`zbekgidroenergo" AJ bilan bog‘lanish uchun:
+"O\'zbekgidroenergo" AJ bilan bog\'lanish uchun:
 - 🏢 Devonxona raqami: 71 241-34-21
 - 📞 Ishonch telefoni:  78  150-50-15
 - 🚨 Korrupsiyaga qarshi kurashish xizmati telefoni: 78 150-50-35
-- 🏠 Manzil: 100011, Tashkent sh., Navoiy  ko‘chasi, 22.
+- 🏠 Manzil: 100011, Tashkent sh., Navoiy  ko\'chasi, 22.
 - 🌐 Veb-sayt: uzgidro.uz
 - 📧 Elektron pochta:  devonxona@uzgidro.uz
 

@@ -30,6 +30,8 @@ Route::get('/dd', function (HttpService $httpService) {
     dd($lastUpdate);
 });
 
+Route::post('/bot', [Controller::class, 'parseUpdateRequest']);
+
 Route::post('/murojaat', function (Request $request) {
 
     if ($request->input('message.text') == '/start') {
