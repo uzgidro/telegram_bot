@@ -5,5 +5,5 @@ namespace App\Constants;
 class MessageType
 {
     public const ANTICOR = 'anticor';
-    public const MUROJAAT = 'murojat';
+    public const MUROJAAT = 'murojaat';
 }

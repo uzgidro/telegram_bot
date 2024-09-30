@@ -32,7 +32,14 @@ Route::get('/dd', function (HttpService $httpService) {
 
 Route::post('/bot', [Controller::class, 'parseUpdateRequest']);
 
-Route::get('/api/messageList', function (Request $request) {
+Route::get('/api/getMessages', function (Request $request) {
+    return json_encode(
+        DB::table('messages')
+            ->get()
+    );
+});
+
+Route::get('/api/getMessagesByType', function (Request $request) {
     switch ($request->string('type')) {
         case MessageType::ANTICOR: {
             $type = MessageType::ANTICOR;
@@ -43,7 +50,7 @@ Route::get('/api/messageList', function (Request $request) {
             break;
         }
         default: {
-            return;
+            return [];
         }
     }
 
