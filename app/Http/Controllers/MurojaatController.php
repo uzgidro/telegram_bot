@@ -110,11 +110,11 @@ To contact "Uzbekgidroenergo" JSC:
     public function newRecord(Users $user): void
     {
         if ($user->language == Languages::RU) {
-            $text = 'Спасибо за ваше обращение! Мы ценим ваше время и заботу. Ваш запрос успешно получен, и мы постараемся ответить на него как можно скорее.';
+            $text = 'Спасибо за ваше обращение! Ваш запрос успешно получен, и мы постараемся ответить на него как можно скорее.';
         } elseif ($user->language == Languages::UZ) {
-            $text = 'Murojaatingiz uchun rahmat! Vaqtingiz va tashvishingizni qadrlaymiz. Sizning so\'rovingiz muvaffaqiyatli qabul qilindi va biz unga imkon qadar tezroq javob berishga harakat qilamiz.';
+            $text = 'Murojaatingiz uchun rahmat! Sizning so\'rovingiz muvaffaqiyatli qabul qilindi va biz unga imkon qadar tezroq javob berishga harakat qilamiz.';
         } else {
-            $text = 'Thank you for your request! We appreciate your time and concern. Your request has been successfully received and we will try to respond to it as soon as possible.';
+            $text = 'Thank you for your request! Your request has been successfully received and we will try to respond to it as soon as possible.';
         }
 
         $this->httpService->sendMessage(
